@@ -1,0 +1,166 @@
+> show dbs
+admin   0.000GB
+config  0.000GB
+local   0.000GB
+na      0.000GB
+users   0.000GB
+
+> load("D:\\fullstack-tanfolyam\\na-mongo-db\\cli\\savingUsers.js")
+true
+
+> db.students.find()
+{ "_id" : ObjectId("62739df75607c7f4f0692092"), "name" : "Gizuska" }
+{ "_id" : ObjectId("62739df75607c7f4f0692093"), "name" : "Tibor" }
+{ "_id" : ObjectId("62739df75607c7f4f0692094"), "name" : "Anikó" }
+> db.students.find()
+{ "_id" : ObjectId("62739df75607c7f4f0692092"), "name" : "Gizuska" }
+{ "_id" : ObjectId("62739df75607c7f4f0692093"), "name" : "Tibor" }
+{ "_id" : ObjectId("62739df75607c7f4f0692094"), "name" : "Anikó" }
+
+> db.students.update({name: "Gizuska"}, {age: 18})
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+
+> db.students.find()
+{ "_id" : ObjectId("62739df75607c7f4f0692092"), "age" : 18 }
+{ "_id" : ObjectId("62739df75607c7f4f0692093"), "name" : "Tibor" }
+{ "_id" : ObjectId("62739df75607c7f4f0692094"), "name" : "Anikó" }
+
+> db.students.update({name: "Gizuska"}, {age: 18})
+WriteResult({ "nMatched" : 0, "nUpserted" : 0, "nModified" : 0 })
+
+> db.students.update({age: 18}, {name: "Gizuska"})
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+
+> db.students.update({name: "Gizuska"}, {$set: {age: 18}})
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+
+> db.students.find()
+{ "_id" : ObjectId("62739df75607c7f4f0692092"), "name" : "Gizuska", "age" : 18 }
+{ "_id" : ObjectId("62739df75607c7f4f0692093"), "name" : "Tibor" }
+{ "_id" : ObjectId("62739df75607c7f4f0692094"), "name" : "Anikó" }
+
+> db.students.updateOne({name: "Gizuska"}, {$unset: {age: 0}})
+{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }
+
+> db.students.find()
+{ "_id" : ObjectId("62739df75607c7f4f0692092"), "name" : "Gizuska" }
+{ "_id" : ObjectId("62739df75607c7f4f0692093"), "name" : "Tibor" }
+{ "_id" : ObjectId("62739df75607c7f4f0692094"), "name" : "Anikó" }
+
+> db.students.updateMany({}, {$set: { grades: [] }})
+{ "acknowledged" : true, "matchedCount" : 3, "modifiedCount" : 3 }
+
+> db.students.find()
+{ "_id" : ObjectId("62739df75607c7f4f0692092"), "name" : "Gizuska", "grades" : [ ] }
+{ "_id" : ObjectId("62739df75607c7f4f0692093"), "name" : "Tibor", "grades" : [ ] }
+{ "_id" : ObjectId("62739df75607c7f4f0692094"), "name" : "Anikó", "grades" : [ ] }
+
+> db.students.updateOne({name: "Anikó"}, {$push: { grades: 3 }})
+{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }
+
+> db.students.updateOne({name: "Anikó"}, {$push: { grades: 3 }})
+{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }
+
+> db.students.find()
+{ "_id" : ObjectId("62739df75607c7f4f0692092"), "name" : "Gizuska", "grades" : [ ] }
+{ "_id" : ObjectId("62739df75607c7f4f0692093"), "name" : "Tibor", "grades" : [ ] }
+{ "_id" : ObjectId("62739df75607c7f4f0692094"), "name" : "Anikó", "grades" : [ 3, 3 ] }
+
+> db.students.updateOne({name: "Anikó"}, {$addToSet: { grades: 3 }})
+{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 0 }
+
+> db.students.find()
+{ "_id" : ObjectId("62739df75607c7f4f0692092"), "name" : "Gizuska", "grades" : [ ] }
+{ "_id" : ObjectId("62739df75607c7f4f0692093"), "name" : "Tibor", "grades" : [ ] }
+{ "_id" : ObjectId("62739df75607c7f4f0692094"), "name" : "Anikó", "grades" : [ 3, 3 ] }
+
+> db.students.updateOne({name: "Anikó"}, {$addToSet: { grades: 4 }})
+{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }
+
+> db.students.find()
+{ "_id" : ObjectId("62739df75607c7f4f0692092"), "name" : "Gizuska", "grades" : [ ] }
+{ "_id" : ObjectId("62739df75607c7f4f0692093"), "name" : "Tibor", "grades" : [ ] }
+{ "_id" : ObjectId("62739df75607c7f4f0692094"), "name" : "Anikó", "grades" : [ 3, 3, 4 ] }
+
+
+> db.students.updateOne({name: "Anikó"}, {$pull: { grades: 3 }})
+{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }
+
+> db.students.find()
+{ "_id" : ObjectId("62739df75607c7f4f0692092"), "name" : "Gizuska", "grades" : [ ] }
+{ "_id" : ObjectId("62739df75607c7f4f0692093"), "name" : "Tibor", "grades" : [ ] }
+{ "_id" : ObjectId("62739df75607c7f4f0692094"), "name" : "Anikó", "grades" : [ 4 ] }
+
+> db.students.find()
+{ "_id" : ObjectId("62739df75607c7f4f0692092"), "name" : "Gizuska", "grades" : [ ] }
+{ "_id" : ObjectId("62739df75607c7f4f0692093"), "name" : "Tibor", "grades" : [ ] }
+{ "_id" : ObjectId("62739df75607c7f4f0692094"), "name" : "Anikó", "grades" : [ 4 ] }
+
+> db.students.find({}, {grades: 1 })
+{ "_id" : ObjectId("62739df75607c7f4f0692092"), "grades" : [ ] }
+{ "_id" : ObjectId("62739df75607c7f4f0692093"), "grades" : [ ] }
+{ "_id" : ObjectId("62739df75607c7f4f0692094"), "grades" : [ 4 ] }
+
+> db.students.find({}, {grades: 1, name: 1 })
+{ "_id" : ObjectId("62739df75607c7f4f0692092"), "name" : "Gizuska", "grades" : [ ] }
+{ "_id" : ObjectId("62739df75607c7f4f0692093"), "name" : "Tibor", "grades" : [ ] }
+{ "_id" : ObjectId("62739df75607c7f4f0692094"), "name" : "Anikó", "grades" : [ 4 ] }
+
+> db.students.find({}, {grades: 1, _id: 0 })
+{ "grades" : [ ] }
+{ "grades" : [ ] }
+{ "grades" : [ 4 ] }
+
+> db.students.find({}, {grades: 0 })
+{ "_id" : ObjectId("62739df75607c7f4f0692092"), "name" : "Gizuska" }
+{ "_id" : ObjectId("62739df75607c7f4f0692093"), "name" : "Tibor" }
+{ "_id" : ObjectId("62739df75607c7f4f0692094"), "name" : "Anikó" }
+
+> const list = db.students.find()
+
+> list.forEach(data => print("Id of data: " + data._id))
+Id of data: 62739df75607c7f4f0692092
+Id of data: 62739df75607c7f4f0692093
+Id of data: 62739df75607c7f4f0692094
+
+> list.map(data => data.name)
+[ ]
+
+> list.size()
+3
+
+> print(list.size())
+3
+
+> list[0]
+
+> list[1]
+
+> print(list[1])
+[unknown type]
+
+> db.students.find()[1]
+{
+        "_id" : ObjectId("62739df75607c7f4f0692093"),
+        "name" : "Tibor",
+        "grades" : [ ]
+}
+
+> db.students.find()[0]
+{
+        "_id" : ObjectId("62739df75607c7f4f0692092"),
+        "name" : "Gizuska",
+        "grades" : [ ]
+}
+
+> db.students.find({}, {_id:0, name:1}).sort(name: 1)
+uncaught exception: SyntaxError: missing ) after argument list :
+@(shell):1:47
+
+> db.students.find({}, {_id:0, name:1}).sort({name: 1})
+{ "name" : "Anikó" }
+{ "name" : "Gizuska" }
+{ "name" : "Tibor" }
+
+> db.students.find({}, {_id:0, name:1}).sort({name: 1}).skip(1).limit(1)
+{ "name" : "Gizuska" }

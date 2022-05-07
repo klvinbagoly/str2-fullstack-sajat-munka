@@ -1,0 +1,33 @@
+>
+> db.users.find({age: {$lt: 55}})
+{ "_id" : ObjectId("626efea3b93a4bb1dd857b0e"), "name" : "Joe", "age" : 32 }
+{ "_id" : ObjectId("626f95acb93a4bb1dd857b0f"), "name" : "Mary", "age" : 33, "email" : "mary@poppins.hu", "skills" : [ "php", "mysql", "mongoDB" ] }
+{ "_id" : ObjectId("626f9d60096b6507fdaa4e9e"), "name" : "Bob", "age" : 22, "email" : "bob@gmail.com", "skills" : [ "php", "js", "sql", "html" ] }
+{ "_id" : ObjectId("626f9ecab93a4bb1dd857b12"), "name" : "Jim", "age" : 22 }
+{ "_id" : ObjectId("626fa06bb93a4bb1dd857b13"), "name" : "Jill", "age" : 34 }
+{ "_id" : ObjectId("626fa06bb93a4bb1dd857b14"), "name" : "Piri", "age" : 14 }
+{ "_id" : ObjectId("626fa06bb93a4bb1dd857b15"), "name" : "Sanyi", "age" : 32 }
+
+> db.users.find({age: {$lte: 55}})
+{ "_id" : ObjectId("626efea3b93a4bb1dd857b0e"), "name" : "Joe", "age" : 32 }
+{ "_id" : ObjectId("626f95acb93a4bb1dd857b0f"), "name" : "Mary", "age" : 33, "email" : "mary@poppins.hu", "skills" : [ "php", "mysql", "mongoDB" ] }
+{ "_id" : ObjectId("626f9d60096b6507fdaa4e9e"), "name" : "Bob", "age" : 22, "email" : "bob@gmail.com", "skills" : [ "php", "js", "sql", "html" ] }
+{ "_id" : ObjectId("626f9ecab93a4bb1dd857b12"), "name" : "Jim", "age" : 22 }
+{ "_id" : ObjectId("626fa06bb93a4bb1dd857b13"), "name" : "Jill", "age" : 34 }
+{ "_id" : ObjectId("626fa06bb93a4bb1dd857b14"), "name" : "Piri", "age" : 14 }
+{ "_id" : ObjectId("626fa06bb93a4bb1dd857b15"), "name" : "Sanyi", "age" : 32 }
+{ "_id" : ObjectId("626fa12cb93a4bb1dd857b16"), "name" : "XMEN", "age" : 55 }
+
+> db.users.find({age: {$gt: 55}})
+
+> db.users.find({age: {$gte: 55}})
+{ "_id" : ObjectId("626fa12cb93a4bb1dd857b16"), "name" : "XMEN", "age" : 55 }
+
+> db.users.find({age: {$gt: 33}})
+{ "_id" : ObjectId("626fa06bb93a4bb1dd857b13"), "name" : "Jill", "age" : 34 }
+{ "_id" : ObjectId("626fa12cb93a4bb1dd857b16"), "name" : "XMEN", "age" : 55 }
+
+> db.users.find({age: {$gte: 33}})
+{ "_id" : ObjectId("626f95acb93a4bb1dd857b0f"), "name" : "Mary", "age" : 33, "email" : "mary@poppins.hu", "skills" : [ "php", "mysql", "mongoDB" ] }
+{ "_id" : ObjectId("626fa06bb93a4bb1dd857b13"), "name" : "Jill", "age" : 34 }
+{ "_id" : ObjectId("626fa12cb93a4bb1dd857b16"), "name" : "XMEN", "age" : 55 }

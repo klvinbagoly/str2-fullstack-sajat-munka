@@ -1,0 +1,12 @@
+> db.users.find({email: {$regex: /\@gmail\.com/i}})
+{ "_id" : ObjectId("626f9d60096b6507fdaa4e9e"), "name" : "Bob", "age" : 22, "email" : "bob@gmail.com", "skills" : [ "php", "js", "sql", "html" ] }
+
+> db.users.find({name: {$regex: /i/i}})
+{ "_id" : ObjectId("626f9ecab93a4bb1dd857b12"), "name" : "Jim", "age" : 22 }
+{ "_id" : ObjectId("626fa06bb93a4bb1dd857b13"), "name" : "Jill", "age" : 34 }
+{ "_id" : ObjectId("626fa06bb93a4bb1dd857b14"), "name" : "Piri", "age" : 14 }
+{ "_id" : ObjectId("626fa06bb93a4bb1dd857b15"), "name" : "Sanyi", "age" : 32 }
+
+> db.users.find({name: {$regex: /P/i}})
+{ "_id" : ObjectId("626fa06bb93a4bb1dd857b14"), "name" : "Piri", "age" : 14 }
+>

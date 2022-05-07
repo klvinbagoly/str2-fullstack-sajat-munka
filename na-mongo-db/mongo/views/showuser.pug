@@ -1,0 +1,30 @@
+extends layout
+
+block content
+  .container
+    h1= user.name
+    - const actionUrl = "/users/update/" + user._id
+    form.form(action=actionUrl, method="post")
+      .form-group 
+        label Név 
+        input.form-control(type="text", name="name", value=user.name)
+      .form-group 
+        label Név 
+        input.form-control(type="number", name="age", value=user.age)
+      .form-group 
+        label Név 
+        input.form-control(type="email", name="email", value=user.email)
+      .form-group 
+        //- - const bd = new Date(user.bd)
+        //- - const bdArray = [bd.getFullYear(), bd.getMonth() + 1, bd.getDate()]
+        //- - bdArray[1] = bdArray[1].toString().padStart(2, "0")
+        //- - bdArray[2] = bdArray[2].toString().padStart(2, "0")
+        //- - const bdString = bdArray.join('-')
+        - const bdString = user.bd ? user.bd.toJSON().slice(0, 10) : ''
+        label Név 
+        input.form-control(type="date", name="bd", value=bdString)
+        - const data = JSON.stringify(user)
+        p= data
+      .form-group 
+        button.btn.btn-success(type="submit") Mentés
+

@@ -1,0 +1,41 @@
+extends layout
+
+block content
+  .container
+    h1 Felhasználók
+    .row 
+      .col-12.d-grid 
+        a.btn.btn-primary(href="/users/create") Új felhasználó
+    table.table.table-striped
+      thead
+        tr
+          th #
+          th Name
+          th Age
+          th Email
+          th Birthdate
+          th
+      tbody
+        - let nth = 0
+        each user in users
+          - nth++
+          tr
+            td= nth
+            td= user.name
+            td= user.age
+            td= user.email
+            //- - const bd = new Date(user.bd)
+            //- - const bdArray = [bd.getFullYear(), bd.getMonth() + 1, bd.getDate()]
+            //- - bdArray[1] = bdArray[1].toString().padStart(2, "0")
+            //- - bdArray[2] = bdArray[2].toString().padStart(2, "0")
+            //- - const bdString = bdArray.join('-')
+            - const bdString = user.bd ? user.bd.toJSON().slice(0, 10) : ''
+            td= bdString
+            td
+              .btn-group
+                - let infoUrl = '/users/show/' + user._id
+                a.btn.btn-info(href=infoUrl) info
+                - let deleteUrl = '/users/delete/' + user._id
+                form(action=deleteUrl, method="post") 
+                  button.btn.btn-danger.delete-user-btn(type="submit") delete
+                

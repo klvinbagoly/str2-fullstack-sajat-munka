@@ -1,0 +1,22 @@
+extends layout
+
+block content
+  .container
+    h1 Felhasználó létrehozása
+    - const actionUrl = "/users/create"
+    form.form(action=actionUrl, method="post")
+      .form-group 
+        label Név 
+        input.form-control(type="text", name="name")
+      .form-group 
+        label Név 
+        input.form-control(type="number", name="age")
+      .form-group 
+        label Név 
+        input.form-control(type="email", name="email")
+      .form-group 
+        label Név 
+        input.form-control(type="date", name="bd")
+      .form-group 
+        button.btn.btn-success(type="submit") Létrehozás
+

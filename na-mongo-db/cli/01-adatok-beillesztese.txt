@@ -1,0 +1,95 @@
+C:\Program Files\MongoDB\Server\5.0\bin>.\mongod.exe
+(új parancssor)
+C:\Program Files\MongoDB\Server\5.0\bin>.\mongo.exe
+
+> use na
+switched to db na
+
+> db.users.insert({name: "Joe", age: 32})
+WriteResult({ "nInserted" : 1 })
+
+> db.users.find()
+{ "_id" : ObjectId("626efea3b93a4bb1dd857b0e"), "name" : "Joe", "age" : 32 }
+
+> db.users.insert({  name: "Mary", age: 33, email: "mary@poppins.hu, skills: ["php", "mysql", "mongoDB"]})
+uncaught exception: SyntaxError: missing } after property list :
+@(shell):1:77
+
+> db.users.insert({  name: "Mary", age: 33, email: "mary@poppins.hu", skills: ["php", "mysql", "mongoDB"]})
+WriteResult({ "nInserted" : 1 })
+
+> db.users.find()
+{ "_id" : ObjectId("626efea3b93a4bb1dd857b0e"), "name" : "Joe", "age" : 32 }
+{ "_id" : ObjectId("626f95acb93a4bb1dd857b0f"), "name" : "Mary", "age" : 33, "email" : "mary@poppins.hu", "skills" : [ "php", "mysql", "mongoDB" ] }
+
+> var mydoc = {
+...                _id: ObjectId("5099803df3f4948bd2f98391"),
+...                name: { first: "Alan", last: "Turing" },
+...                birth: new Date('Jun 23, 1912'),
+...                death: new Date('Jun 07, 1954'),
+...                contribs: [ "Turing machine", "Turing test", "Turingery" ],
+...                views : NumberLong(1250000)
+...             }
+
+> var turing = {
+... name: {first: "Alan", last: "Turing"},
+... birth: new Date('Jun 23, 1912'),
+... death: new Date('Jun 07, 1954'),
+... contribs: [ "Turing machine", "Turing test" ]
+... }
+
+> db.user.insert(turing)
+WriteResult({ "nInserted" : 1 })
+
+> db.users.find()
+{ "_id" : ObjectId("626efea3b93a4bb1dd857b0e"), "name" : "Joe", "age" : 32 }
+{ "_id" : ObjectId("626f95acb93a4bb1dd857b0f"), "name" : "Mary", "age" : 33, "email" : "mary@poppins.hu", "skills" : [ "php", "mysql", "mongoDB" ] }
+
+> db.users.insert(turing)
+WriteResult({ "nInserted" : 1 })
+
+> db.users.find()
+{ "_id" : ObjectId("626efea3b93a4bb1dd857b0e"), "name" : "Joe", "age" : 32 }
+{ "_id" : ObjectId("626f95acb93a4bb1dd857b0f"), "name" : "Mary", "age" : 33, "email" : "mary@poppins.hu", "skills" : [ "php", "mysql", "mongoDB" ] }
+{ "_id" : ObjectId("626f9856b93a4bb1dd857b11"), "name" : { "first" : "Alan", "last" : "Turing" }, "birth" : ISODate("1912-06-22T22:00:00Z"), "death" : ISODate("1954-06-06T22:00:00Z"), "contribs" : [ "Turing machine", "Turing test" ] }
+
+
+> db.users.insertOne({name: 'Jim', age: 22})
+{
+        "acknowledged" : true,
+        "insertedId" : ObjectId("626f9ecab93a4bb1dd857b12")
+}
+
+> db.users.find({})
+{ "_id" : ObjectId("626efea3b93a4bb1dd857b0e"), "name" : "Joe", "age" : 32 }
+{ "_id" : ObjectId("626f95acb93a4bb1dd857b0f"), "name" : "Mary", "age" : 33, "email" : "mary@poppins.hu", "skills" : [ "php", "mysql", "mongoDB" ] }
+{ "_id" : ObjectId("626f9856b93a4bb1dd857b11"), "name" : { "first" : "Alan", "last" : "Turing" }, "birth" : ISODate("1912-06-22T22:00:00Z"), "death" : ISODate("1954-06-06T22:00:00Z"), "contribs" : [ "Turing machine", "Turing test" ] }
+{ "_id" : ObjectId("626f9d60096b6507fdaa4e9e"), "name" : "Bob", "age" : 22, "email" : "bob@gmail.com", "skills" : [ "php", "js", "sql", "html" ] }
+{ "_id" : ObjectId("626f9ecab93a4bb1dd857b12"), "name" : "Jim", "age" : 22 }
+
+
+> db.users.insert([
+... {name: "Jill", age: 34},
+... {name: "Piri", age: 14},
+... {name: "Sanyi", age: 32}
+... ])
+BulkWriteResult({
+        "writeErrors" : [ ],
+        "writeConcernErrors" : [ ],
+        "nInserted" : 3,
+        "nUpserted" : 0,
+        "nMatched" : 0,
+        "nModified" : 0,
+        "nRemoved" : 0,
+        "upserted" : [ ]
+})
+
+> db.users.find({})
+{ "_id" : ObjectId("626efea3b93a4bb1dd857b0e"), "name" : "Joe", "age" : 32 }
+{ "_id" : ObjectId("626f95acb93a4bb1dd857b0f"), "name" : "Mary", "age" : 33, "email" : "mary@poppins.hu", "skills" : [ "php", "mysql", "mongoDB" ] }
+{ "_id" : ObjectId("626f9856b93a4bb1dd857b11"), "name" : { "first" : "Alan", "last" : "Turing" }, "birth" : ISODate("1912-06-22T22:00:00Z"), "death" : ISODate("1954-06-06T22:00:00Z"), "contribs" : [ "Turing machine", "Turing test" ] }
+{ "_id" : ObjectId("626f9d60096b6507fdaa4e9e"), "name" : "Bob", "age" : 22, "email" : "bob@gmail.com", "skills" : [ "php", "js", "sql", "html" ] }
+{ "_id" : ObjectId("626f9ecab93a4bb1dd857b12"), "name" : "Jim", "age" : 22 }
+{ "_id" : ObjectId("626fa06bb93a4bb1dd857b13"), "name" : "Jill", "age" : 34 }
+{ "_id" : ObjectId("626fa06bb93a4bb1dd857b14"), "name" : "Piri", "age" : 14 }
+{ "_id" : ObjectId("626fa06bb93a4bb1dd857b15"), "name" : "Sanyi", "age" : 32 }

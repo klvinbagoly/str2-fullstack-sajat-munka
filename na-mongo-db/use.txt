@@ -1,0 +1,524 @@
+C:\Program Files\MongoDB\Server\5.0\bin>.\mongod.exe
+(új parancssor)
+C:\Program Files\MongoDB\Server\5.0\bin>.\mongo.exe
+
+> use na
+switched to db na
+
+> db.users.insert({name: "Joe", age: 32})
+WriteResult({ "nInserted" : 1 })
+
+> db.users.find()
+{ "_id" : ObjectId("626efea3b93a4bb1dd857b0e"), "name" : "Joe", "age" : 32 }
+
+> db.users.insert({  name: "Mary", age: 33, email: "mary@poppins.hu, skills: ["php", "mysql", "mongoDB"]})
+uncaught exception: SyntaxError: missing } after property list :
+@(shell):1:77
+
+> db.users.insert({  name: "Mary", age: 33, email: "mary@poppins.hu", skills: ["php", "mysql", "mongoDB"]})
+WriteResult({ "nInserted" : 1 })
+
+> db.users.find()
+{ "_id" : ObjectId("626efea3b93a4bb1dd857b0e"), "name" : "Joe", "age" : 32 }
+{ "_id" : ObjectId("626f95acb93a4bb1dd857b0f"), "name" : "Mary", "age" : 33, "email" : "mary@poppins.hu", "skills" : [ "php", "mysql", "mongoDB" ] }
+
+> var mydoc = {
+...                _id: ObjectId("5099803df3f4948bd2f98391"),
+...                name: { first: "Alan", last: "Turing" },
+...                birth: new Date('Jun 23, 1912'),
+...                death: new Date('Jun 07, 1954'),
+...                contribs: [ "Turing machine", "Turing test", "Turingery" ],
+...                views : NumberLong(1250000)
+...             }
+
+> var turing = {
+... name: {first: "Alan", last: "Turing"},
+... birth: new Date('Jun 23, 1912'),
+... death: new Date('Jun 07, 1954'),
+... contribs: [ "Turing machine", "Turing test" ]
+... }
+
+> db.user.insert(turing)
+WriteResult({ "nInserted" : 1 })
+
+> db.users.find()
+{ "_id" : ObjectId("626efea3b93a4bb1dd857b0e"), "name" : "Joe", "age" : 32 }
+{ "_id" : ObjectId("626f95acb93a4bb1dd857b0f"), "name" : "Mary", "age" : 33, "email" : "mary@poppins.hu", "skills" : [ "php", "mysql", "mongoDB" ] }
+
+> db.users.insert(turing)
+WriteResult({ "nInserted" : 1 })
+
+> db.users.find()
+{ "_id" : ObjectId("626efea3b93a4bb1dd857b0e"), "name" : "Joe", "age" : 32 }
+{ "_id" : ObjectId("626f95acb93a4bb1dd857b0f"), "name" : "Mary", "age" : 33, "email" : "mary@poppins.hu", "skills" : [ "php", "mysql", "mongoDB" ] }
+{ "_id" : ObjectId("626f9856b93a4bb1dd857b11"), "name" : { "first" : "Alan", "last" : "Turing" }, "birth" : ISODate("1912-06-22T22:00:00Z"), "death" : ISODate("1954-06-06T22:00:00Z"), "contribs" : [ "Turing machine", "Turing test" ] }
+
+
+> db.users.insertOne({name: 'Jim', age: 22})
+{
+        "acknowledged" : true,
+        "insertedId" : ObjectId("626f9ecab93a4bb1dd857b12")
+}
+
+> db.users.find({})
+{ "_id" : ObjectId("626efea3b93a4bb1dd857b0e"), "name" : "Joe", "age" : 32 }
+{ "_id" : ObjectId("626f95acb93a4bb1dd857b0f"), "name" : "Mary", "age" : 33, "email" : "mary@poppins.hu", "skills" : [ "php", "mysql", "mongoDB" ] }
+{ "_id" : ObjectId("626f9856b93a4bb1dd857b11"), "name" : { "first" : "Alan", "last" : "Turing" }, "birth" : ISODate("1912-06-22T22:00:00Z"), "death" : ISODate("1954-06-06T22:00:00Z"), "contribs" : [ "Turing machine", "Turing test" ] }
+{ "_id" : ObjectId("626f9d60096b6507fdaa4e9e"), "name" : "Bob", "age" : 22, "email" : "bob@gmail.com", "skills" : [ "php", "js", "sql", "html" ] }
+{ "_id" : ObjectId("626f9ecab93a4bb1dd857b12"), "name" : "Jim", "age" : 22 }
+
+
+> db.users.insert([
+... {name: "Jill", age: 34},
+... {name: "Piri", age: 14},
+... {name: "Sanyi", age: 32}
+... ])
+BulkWriteResult({
+        "writeErrors" : [ ],
+        "writeConcernErrors" : [ ],
+        "nInserted" : 3,
+        "nUpserted" : 0,
+        "nMatched" : 0,
+        "nModified" : 0,
+        "nRemoved" : 0,
+        "upserted" : [ ]
+})
+
+> db.users.find({})
+{ "_id" : ObjectId("626efea3b93a4bb1dd857b0e"), "name" : "Joe", "age" : 32 }
+{ "_id" : ObjectId("626f95acb93a4bb1dd857b0f"), "name" : "Mary", "age" : 33, "email" : "mary@poppins.hu", "skills" : [ "php", "mysql", "mongoDB" ] }
+{ "_id" : ObjectId("626f9856b93a4bb1dd857b11"), "name" : { "first" : "Alan", "last" : "Turing" }, "birth" : ISODate("1912-06-22T22:00:00Z"), "death" : ISODate("1954-06-06T22:00:00Z"), "contribs" : [ "Turing machine", "Turing test" ] }
+{ "_id" : ObjectId("626f9d60096b6507fdaa4e9e"), "name" : "Bob", "age" : 22, "email" : "bob@gmail.com", "skills" : [ "php", "js", "sql", "html" ] }
+{ "_id" : ObjectId("626f9ecab93a4bb1dd857b12"), "name" : "Jim", "age" : 22 }
+{ "_id" : ObjectId("626fa06bb93a4bb1dd857b13"), "name" : "Jill", "age" : 34 }
+{ "_id" : ObjectId("626fa06bb93a4bb1dd857b14"), "name" : "Piri", "age" : 14 }
+{ "_id" : ObjectId("626fa06bb93a4bb1dd857b15"), "name" : "Sanyi", "age" : 32 }
+
+
+> xx = ObjectId()
+ObjectId("626fa12cb93a4bb1dd857b16")
+
+> xx
+ObjectId("626fa12cb93a4bb1dd857b16")
+
+> xx.getTimestamp()
+ISODate("2022-05-02T09:15:24Z")
+
+> xx.str
+626fa12cb93a4bb1dd857b16
+
+> db.users.insert({_id: xx, name: "XMEN", age: 55})
+WriteResult({ "nInserted" : 1 })
+
+> db.users.find({})
+{ "_id" : ObjectId("626efea3b93a4bb1dd857b0e"), "name" : "Joe", "age" : 32 }
+{ "_id" : ObjectId("626f95acb93a4bb1dd857b0f"), "name" : "Mary", "age" : 33, "email" : "mary@poppins.hu", "skills" : [ "php", "mysql", "mongoDB" ] }
+{ "_id" : ObjectId("626f9856b93a4bb1dd857b11"), "name" : { "first" : "Alan", "last" : "Turing" }, "birth" : ISODate("1912-06-22T22:00:00Z"), "death" : ISODate("1954-06-06T22:00:00Z"), "contribs" : [ "Turing machine", "Turing test" ] }
+{ "_id" : ObjectId("626f9d60096b6507fdaa4e9e"), "name" : "Bob", "age" : 22, "email" : "bob@gmail.com", "skills" : [ "php", "js", "sql", "html" ] }
+{ "_id" : ObjectId("626f9ecab93a4bb1dd857b12"), "name" : "Jim", "age" : 22 }
+{ "_id" : ObjectId("626fa06bb93a4bb1dd857b13"), "name" : "Jill", "age" : 34 }
+{ "_id" : ObjectId("626fa06bb93a4bb1dd857b14"), "name" : "Piri", "age" : 14 }
+{ "_id" : ObjectId("626fa06bb93a4bb1dd857b15"), "name" : "Sanyi", "age" : 32 }
+{ "_id" : ObjectId("626fa12cb93a4bb1dd857b16"), "name" : "XMEN", "age" : 55 }
+
+
+> db.products.drop()
+true
+
+> db.products.drop()
+false
+
+> db.createCollection("products", {
+... validator: {
+...   $jsonSchema: {
+...     required: ["name", "price"]
+...   }
+... }
+... })
+{ "ok" : 1 }
+
+> db.products.insertOne({name: "car", price: 250000})
+{
+        "acknowledged" : true,
+        "insertedId" : ObjectId("626fa60cb93a4bb1dd857b17")
+}
+
+> db.products.insertOne({name: "bike"})
+uncaught exception: WriteError({
+        "index" : 0,
+        "code" : 121,
+        "errmsg" : "Document failed validation",
+        "op" : {
+                "_id" : ObjectId("626fa63eb93a4bb1dd857b18"),
+                "name" : "bike"
+        },
+        "errInfo" : {
+                "failingDocumentId" : ObjectId("626fa63eb93a4bb1dd857b18"),
+                "details" : {
+                        "operatorName" : "$jsonSchema",
+                        "schemaRulesNotSatisfied" : [
+                                {
+                                        "operatorName" : "required",
+                                        "specifiedAs" : {
+                                                "required" : [
+                                                        "name",
+                                                        "price"
+                                                ]
+                                        },
+                                        "missingProperties" : [
+                                                "price"
+                                        ]
+                                }
+                        ]
+                }
+        }
+}) :
+WriteError({
+        "index" : 0,
+        "code" : 121,
+        "errmsg" : "Document failed validation",
+        "op" : {
+                "_id" : ObjectId("626fa63eb93a4bb1dd857b18"),
+                "name" : "bike"
+        },
+        "errInfo" : {
+                "failingDocumentId" : ObjectId("626fa63eb93a4bb1dd857b18"),
+                "details" : {
+                        "operatorName" : "$jsonSchema",
+                        "schemaRulesNotSatisfied" : [
+                                {
+                                        "operatorName" : "required",
+                                        "specifiedAs" : {
+                                                "required" : [
+                                                        "name",
+                                                        "price"
+                                                ]
+                                        },
+                                        "missingProperties" : [
+                                                "price"
+                                        ]
+                                }
+                        ]
+                }
+        }
+})
+WriteError@src/mongo/shell/bulk_api.js:465:48
+mergeBatchResults@src/mongo/shell/bulk_api.js:871:49
+executeBatch@src/mongo/shell/bulk_api.js:940:13
+Bulk/this.execute@src/mongo/shell/bulk_api.js:1182:21
+DBCollection.prototype.insertOne@src/mongo/shell/crud_api.js:264:9
+@(shell):1:1
+
+
+> db.products.find()
+{ "_id" : ObjectId("626fa60cb93a4bb1dd857b17"), "name" : "car", "price" : 250000 }
+
+
+> db.products.drop()
+true
+
+> db.createCollection("products", {
+... validator: {
+...   $jsonSchema: {
+...     properties: {
+...       name: {bsonType: "string", pattern: "[A-Z].*",
+...       price: {bsonType: "int", minimum: 1000, maximum: 300000}
+...     }
+...   }
+... }
+... })
+...
+...
+> db.products.insert({name: "bob"})
+WriteResult({ "nInserted" : 1 })
+> db.products.drop()
+true
+> db.createCollection("products", {
+... validator: {
+...   $jsonSchema: {
+...     properties: {
+...       name: {bsonType: "string", pattern: "[A-Z].*"},
+...       price: {bsonType: "int", minimum: 1000, maximum: 300000}
+...     }
+...   }
+... }
+... })
+{ "ok" : 1 }
+> db.products.insert({name: "bob"})
+WriteResult({
+        "nInserted" : 0,
+        "writeError" : {
+                "code" : 121,
+                "errmsg" : "Document failed validation",
+                "errInfo" : {
+                        "failingDocumentId" : ObjectId("626fa988b93a4bb1dd857b1a"),
+                        "details" : {
+                                "operatorName" : "$jsonSchema",
+                                "schemaRulesNotSatisfied" : [
+                                        {
+                                                "operatorName" : "properties",
+                                                "propertiesNotSatisfied" : [
+                                                        {
+                                                                "propertyName" : "name",
+                                                                "details" : [
+                                                                        {
+                                                                                "operatorName" : "pattern",
+                                                                                "specifiedAs" : {
+                                                                                        "pattern" : "[A-Z].*"
+                                                                                },
+                                                                                "reason" : "regular expression did not match",
+                                                                                "consideredValue" : "bob"
+                                                                        }
+                                                                ]
+                                                        }
+                                                ]
+                                        }
+                                ]
+                        }
+                }
+        }
+})
+> db.products.insert({name: "Bob"})
+WriteResult({ "nInserted" : 1 })
+>
+> db.products.insert({name: "Bob", price: 2000})
+WriteResult({
+        "nInserted" : 0,
+        "writeError" : {
+                "code" : 121,
+                "errmsg" : "Document failed validation",
+                "errInfo" : {
+                        "failingDocumentId" : ObjectId("626faa00b93a4bb1dd857b1c"),
+                        "details" : {
+                                "operatorName" : "$jsonSchema",
+                                "schemaRulesNotSatisfied" : [
+                                        {
+                                                "operatorName" : "properties",
+                                                "propertiesNotSatisfied" : [
+                                                        {
+                                                                "propertyName" : "price",
+                                                                "details" : [
+                                                                        {
+                                                                                "operatorName" : "bsonType",
+                                                                                "specifiedAs" : {
+                                                                                        "bsonType" : "int"
+                                                                                },
+                                                                                "reason" : "type did not match",
+                                                                                "consideredValue" : 2000,
+                                                                                "consideredType" : "double"
+                                                                        }
+                                                                ]
+                                                        }
+                                                ]
+                                        }
+                                ]
+                        }
+                }
+        }
+})
+
+> db.products.insert({name: "Bob", price: NumberInt(150000)})
+WriteResult({ "nInserted" : 1 })
+
+> db.products.find()
+{ "_id" : ObjectId("626fa9a8b93a4bb1dd857b1b"), "name" : "Bob" }
+{ "_id" : ObjectId("626faa1bb93a4bb1dd857b1d"), "name" : "Bob", "price" : 150000 }
+
+
+> db.users.findOne()
+{ "_id" : ObjectId("626efea3b93a4bb1dd857b0e"), "name" : "Joe", "age" : 32 }
+
+> db.users.findOne(name: "Mary")
+uncaught exception: SyntaxError: missing ) after argument list :
+@(shell):1:21
+
+> db.users.findOne({name: "Mary"})
+{
+        "_id" : ObjectId("626f95acb93a4bb1dd857b0f"),
+        "name" : "Mary",
+        "age" : 33,
+        "email" : "mary@poppins.hu",
+        "skills" : [
+                "php",
+                "mysql",
+                "mongoDB"
+        ]
+}
+
+> db.users.find({name: "Mary"})
+{ "_id" : ObjectId("626f95acb93a4bb1dd857b0f"), "name" : "Mary", "age" : 33, "email" : "mary@poppins.hu", "skills" : [ "php", "mysql", "mongoDB" ] }
+
+> db.users.findOne({age: 55})
+{
+        "_id" : ObjectId("626fa12cb93a4bb1dd857b16"),
+        "name" : "XMEN",
+        "age" : 55
+}
+
+> db.users.find({age: 55})
+{ "_id" : ObjectId("626fa12cb93a4bb1dd857b16"), "name" : "XMEN", "age" : 55 }
+
+> db.users.find()
+{ "_id" : ObjectId("626efea3b93a4bb1dd857b0e"), "name" : "Joe", "age" : 32 }
+{ "_id" : ObjectId("626f95acb93a4bb1dd857b0f"), "name" : "Mary", "age" : 33, "email" : "mary@poppins.hu", "skills" : [ "php", "mysql", "mongoDB" ] }
+{ "_id" : ObjectId("626f9856b93a4bb1dd857b11"), "name" : { "first" : "Alan", "last" : "Turing" }, "birth" : ISODate("1912-06-22T22:00:00Z"), "death" : ISODate("1954-06-06T22:00:00Z"), "contribs" : [ "Turing machine", "Turing test" ] }
+{ "_id" : ObjectId("626f9d60096b6507fdaa4e9e"), "name" : "Bob", "age" : 22, "email" : "bob@gmail.com", "skills" : [ "php", "js", "sql", "html" ] }
+{ "_id" : ObjectId("626f9ecab93a4bb1dd857b12"), "name" : "Jim", "age" : 22 }
+{ "_id" : ObjectId("626fa06bb93a4bb1dd857b13"), "name" : "Jill", "age" : 34 }
+{ "_id" : ObjectId("626fa06bb93a4bb1dd857b14"), "name" : "Piri", "age" : 14 }
+{ "_id" : ObjectId("626fa06bb93a4bb1dd857b15"), "name" : "Sanyi", "age" : 32 }
+{ "_id" : ObjectId("626fa12cb93a4bb1dd857b16"), "name" : "XMEN", "age" : 55 }
+
+> db.users.findOne({age: 22})
+{
+        "_id" : ObjectId("626f9d60096b6507fdaa4e9e"),
+        "name" : "Bob",
+        "age" : 22,
+        "email" : "bob@gmail.com",
+        "skills" : [
+                "php",
+                "js",
+                "sql",
+                "html"
+        ]
+}
+
+> db.users.find({age: 22})
+{ "_id" : ObjectId("626f9d60096b6507fdaa4e9e"), "name" : "Bob", "age" : 22, "email" : "bob@gmail.com", "skills" : [ "php", "js", "sql", "html" ] }
+{ "_id" : ObjectId("626f9ecab93a4bb1dd857b12"), "name" : "Jim", "age" : 22 }
+
+> db.users.find({name.first: "Alan"})
+uncaught exception: SyntaxError: missing : after property id :
+@(shell):1:19
+
+> db.users.find({"name.first": "Alan"})
+{ "_id" : ObjectId("626f9856b93a4bb1dd857b11"), "name" : { "first" : "Alan", "last" : "Turing" }, "birth" : ISODate("1912-06-22T22:00:00Z"), "death" : ISODate("1954-06-06T22:00:00Z"), "contribs" : [ "Turing machine", "Turing test" ] }
+
+> db.users.findOne({contribs: {$in: ["Turing"]}})
+null
+> db.users.findOne({contribs: {$in: ["Turing test"]}})
+{
+        "_id" : ObjectId("626f9856b93a4bb1dd857b11"),
+        "name" : {
+                "first" : "Alan",
+                "last" : "Turing"
+        },
+        "birth" : ISODate("1912-06-22T22:00:00Z"),
+        "death" : ISODate("1954-06-06T22:00:00Z"),
+        "contribs" : [
+                "Turing machine",
+                "Turing test"
+        ]
+}
+> db.users.findOne({skills: {$in: ["php"]}})
+{
+        "_id" : ObjectId("626f95acb93a4bb1dd857b0f"),
+        "name" : "Mary",
+        "age" : 33,
+        "email" : "mary@poppins.hu",
+        "skills" : [
+                "php",
+                "mysql",
+                "mongoDB"
+        ]
+}
+> db.users.find({skills: {$in: ["php"]}})
+{ "_id" : ObjectId("626f95acb93a4bb1dd857b0f"), "name" : "Mary", "age" : 33, "email" : "mary@poppins.hu", "skills" : [ "php", "mysql", "mongoDB" ] }
+{ "_id" : ObjectId("626f9d60096b6507fdaa4e9e"), "name" : "Bob", "age" : 22, "email" : "bob@gmail.com", "skills" : [ "php", "js", "sql", "html" ] }
+> db.users.find({skills: {$nin: ["mongoDB"]}})
+{ "_id" : ObjectId("626efea3b93a4bb1dd857b0e"), "name" : "Joe", "age" : 32 }
+{ "_id" : ObjectId("626f9856b93a4bb1dd857b11"), "name" : { "first" : "Alan", "last" : "Turing" }, "birth" : ISODate("1912-06-22T22:00:00Z"), "death" : ISODate("1954-06-06T22:00:00Z"), "contribs" : [ "Turing machine", "Turing test" ] }
+{ "_id" : ObjectId("626f9d60096b6507fdaa4e9e"), "name" : "Bob", "age" : 22, "email" : "bob@gmail.com", "skills" : [ "php", "js", "sql", "html" ] }
+{ "_id" : ObjectId("626f9ecab93a4bb1dd857b12"), "name" : "Jim", "age" : 22 }
+{ "_id" : ObjectId("626fa06bb93a4bb1dd857b13"), "name" : "Jill", "age" : 34 }
+{ "_id" : ObjectId("626fa06bb93a4bb1dd857b14"), "name" : "Piri", "age" : 14 }
+{ "_id" : ObjectId("626fa06bb93a4bb1dd857b15"), "name" : "Sanyi", "age" : 32 }
+{ "_id" : ObjectId("626fa12cb93a4bb1dd857b16"), "name" : "XMEN", "age" : 55 }
+>
+> db.users.find({age: {$eq: 55}})
+{ "_id" : ObjectId("626fa12cb93a4bb1dd857b16"), "name" : "XMEN", "age" : 55 }
+> db.users.find({age: {$eq: 22}})
+{ "_id" : ObjectId("626f9d60096b6507fdaa4e9e"), "name" : "Bob", "age" : 22, "email" : "bob@gmail.com", "skills" : [ "php", "js", "sql", "html" ] }
+{ "_id" : ObjectId("626f9ecab93a4bb1dd857b12"), "name" : "Jim", "age" : 22 }
+> db.users.find({age: {$ne: 22}})
+{ "_id" : ObjectId("626efea3b93a4bb1dd857b0e"), "name" : "Joe", "age" : 32 }
+{ "_id" : ObjectId("626f95acb93a4bb1dd857b0f"), "name" : "Mary", "age" : 33, "email" : "mary@poppins.hu", "skills" : [ "php", "mysql", "mongoDB" ] }
+{ "_id" : ObjectId("626f9856b93a4bb1dd857b11"), "name" : { "first" : "Alan", "last" : "Turing" }, "birth" : ISODate("1912-06-22T22:00:00Z"), "death" : ISODate("1954-06-06T22:00:00Z"), "contribs" : [ "Turing machine", "Turing test" ] }
+{ "_id" : ObjectId("626fa06bb93a4bb1dd857b13"), "name" : "Jill", "age" : 34 }
+{ "_id" : ObjectId("626fa06bb93a4bb1dd857b14"), "name" : "Piri", "age" : 14 }
+{ "_id" : ObjectId("626fa06bb93a4bb1dd857b15"), "name" : "Sanyi", "age" : 32 }
+{ "_id" : ObjectId("626fa12cb93a4bb1dd857b16"), "name" : "XMEN", "age" : 55 }
+> db.users.find({age: {$ne: 22}, skills: {$in: "js"}})
+Error: error: {
+        "ok" : 0,
+        "errmsg" : "$in needs an array",
+        "code" : 2,
+        "codeName" : "BadValue"
+}
+> db.users.find({age: {$ne: 22}, skills: {$in: [ "js" ]}})
+>
+> db.users.find({age: {$ne: 22}, skills: {$in: [ "js" ]}})
+> db.users.find({age: {$ne: 22}, skills: {$in: ["js"]}})
+> db.users.find({age: {$ne: 55}, skills: {$in: ["js"]}})
+{ "_id" : ObjectId("626f9d60096b6507fdaa4e9e"), "name" : "Bob", "age" : 22, "email" : "bob@gmail.com", "skills" : [ "php", "js", "sql", "html" ] }
+>
+
+>
+> db.users.find({age: {$lt: 55}})
+{ "_id" : ObjectId("626efea3b93a4bb1dd857b0e"), "name" : "Joe", "age" : 32 }
+{ "_id" : ObjectId("626f95acb93a4bb1dd857b0f"), "name" : "Mary", "age" : 33, "email" : "mary@poppins.hu", "skills" : [ "php", "mysql", "mongoDB" ] }
+{ "_id" : ObjectId("626f9d60096b6507fdaa4e9e"), "name" : "Bob", "age" : 22, "email" : "bob@gmail.com", "skills" : [ "php", "js", "sql", "html" ] }
+{ "_id" : ObjectId("626f9ecab93a4bb1dd857b12"), "name" : "Jim", "age" : 22 }
+{ "_id" : ObjectId("626fa06bb93a4bb1dd857b13"), "name" : "Jill", "age" : 34 }
+{ "_id" : ObjectId("626fa06bb93a4bb1dd857b14"), "name" : "Piri", "age" : 14 }
+{ "_id" : ObjectId("626fa06bb93a4bb1dd857b15"), "name" : "Sanyi", "age" : 32 }
+> db.users.find({age: {$lte: 55}})
+{ "_id" : ObjectId("626efea3b93a4bb1dd857b0e"), "name" : "Joe", "age" : 32 }
+{ "_id" : ObjectId("626f95acb93a4bb1dd857b0f"), "name" : "Mary", "age" : 33, "email" : "mary@poppins.hu", "skills" : [ "php", "mysql", "mongoDB" ] }
+{ "_id" : ObjectId("626f9d60096b6507fdaa4e9e"), "name" : "Bob", "age" : 22, "email" : "bob@gmail.com", "skills" : [ "php", "js", "sql", "html" ] }
+{ "_id" : ObjectId("626f9ecab93a4bb1dd857b12"), "name" : "Jim", "age" : 22 }
+{ "_id" : ObjectId("626fa06bb93a4bb1dd857b13"), "name" : "Jill", "age" : 34 }
+{ "_id" : ObjectId("626fa06bb93a4bb1dd857b14"), "name" : "Piri", "age" : 14 }
+{ "_id" : ObjectId("626fa06bb93a4bb1dd857b15"), "name" : "Sanyi", "age" : 32 }
+{ "_id" : ObjectId("626fa12cb93a4bb1dd857b16"), "name" : "XMEN", "age" : 55 }
+> db.users.find({age: {$gt: 55}})
+> db.users.find({age: {$gte: 55}})
+{ "_id" : ObjectId("626fa12cb93a4bb1dd857b16"), "name" : "XMEN", "age" : 55 }
+> db.users.find({age: {$gt: 33}})
+{ "_id" : ObjectId("626fa06bb93a4bb1dd857b13"), "name" : "Jill", "age" : 34 }
+{ "_id" : ObjectId("626fa12cb93a4bb1dd857b16"), "name" : "XMEN", "age" : 55 }
+> db.users.find({age: {$gte: 33}})
+{ "_id" : ObjectId("626f95acb93a4bb1dd857b0f"), "name" : "Mary", "age" : 33, "email" : "mary@poppins.hu", "skills" : [ "php", "mysql", "mongoDB" ] }
+{ "_id" : ObjectId("626fa06bb93a4bb1dd857b13"), "name" : "Jill", "age" : 34 }
+{ "_id" : ObjectId("626fa12cb93a4bb1dd857b16"), "name" : "XMEN", "age" : 55 }
+>
+
+> db.users.find({email: {$regex: /\@gmail\.com/i}})
+{ "_id" : ObjectId("626f9d60096b6507fdaa4e9e"), "name" : "Bob", "age" : 22, "email" : "bob@gmail.com", "skills" : [ "php", "js", "sql", "html" ] }
+> db.users.find({name: {$regex: /i/i}})
+{ "_id" : ObjectId("626f9ecab93a4bb1dd857b12"), "name" : "Jim", "age" : 22 }
+{ "_id" : ObjectId("626fa06bb93a4bb1dd857b13"), "name" : "Jill", "age" : 34 }
+{ "_id" : ObjectId("626fa06bb93a4bb1dd857b14"), "name" : "Piri", "age" : 14 }
+{ "_id" : ObjectId("626fa06bb93a4bb1dd857b15"), "name" : "Sanyi", "age" : 32 }
+> db.users.find({name: {$regex: /P/i}})
+{ "_id" : ObjectId("626fa06bb93a4bb1dd857b14"), "name" : "Piri", "age" : 14 }
+>
+
+>
+> db.users.find({ $and: [
+... {age: {$lt: 55}},
+... {age: {$gt: 14}}
+... ]})
+{ "_id" : ObjectId("626efea3b93a4bb1dd857b0e"), "name" : "Joe", "age" : 32 }
+{ "_id" : ObjectId("626f95acb93a4bb1dd857b0f"), "name" : "Mary", "age" : 33, "email" : "mary@poppins.hu", "skills" : [ "php", "mysql", "mongoDB" ] }
+{ "_id" : ObjectId("626f9d60096b6507fdaa4e9e"), "name" : "Bob", "age" : 22, "email" : "bob@gmail.com", "skills" : [ "php", "js", "sql", "html" ] }
+{ "_id" : ObjectId("626f9ecab93a4bb1dd857b12"), "name" : "Jim", "age" : 22 }
+{ "_id" : ObjectId("626fa06bb93a4bb1dd857b13"), "name" : "Jill", "age" : 34 }
+{ "_id" : ObjectId("626fa06bb93a4bb1dd857b15"), "name" : "Sanyi", "age" : 32 }
+> db.users.find({ $or: [ {age: {$gt: 55}}, {age: {$lt: 14}} ]})
+> db.users.find({ $or: [ {age: {$gte: 55}}, {age: {$lte: 14}} ]})
+{ "_id" : ObjectId("626fa06bb93a4bb1dd857b14"), "name" : "Piri", "age" : 14 }
+{ "_id" : ObjectId("626fa12cb93a4bb1dd857b16"), "name" : "XMEN", "age" : 55 }
+> db.users.find({ $nor: [ {age: {$lt: 55}}, {age: {$gt: 14}} ]})
+{ "_id" : ObjectId("626f9856b93a4bb1dd857b11"), "name" : { "first" : "Alan", "last" : "Turing" }, "birth" : ISODate("1912-06-22T22:00:00Z"), "death" : ISODate("1954-06-06T22:00:00Z"), "contribs" : [ "Turing machine", "Turing test" ] }
+>

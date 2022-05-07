@@ -1,0 +1,208 @@
+
+> db.products.drop()
+true
+
+> db.products.drop()
+false
+
+> db.createCollection("products", {
+... validator: {
+...   $jsonSchema: {
+...     required: ["name", "price"]
+...   }
+... }
+... })
+{ "ok" : 1 }
+
+> db.products.insertOne({name: "car", price: 250000})
+{
+        "acknowledged" : true,
+        "insertedId" : ObjectId("626fa60cb93a4bb1dd857b17")
+}
+
+> db.products.insertOne({name: "bike"})
+uncaught exception: WriteError({
+        "index" : 0,
+        "code" : 121,
+        "errmsg" : "Document failed validation",
+        "op" : {
+                "_id" : ObjectId("626fa63eb93a4bb1dd857b18"),
+                "name" : "bike"
+        },
+        "errInfo" : {
+                "failingDocumentId" : ObjectId("626fa63eb93a4bb1dd857b18"),
+                "details" : {
+                        "operatorName" : "$jsonSchema",
+                        "schemaRulesNotSatisfied" : [
+                                {
+                                        "operatorName" : "required",
+                                        "specifiedAs" : {
+                                                "required" : [
+                                                        "name",
+                                                        "price"
+                                                ]
+                                        },
+                                        "missingProperties" : [
+                                                "price"
+                                        ]
+                                }
+                        ]
+                }
+        }
+}) :
+WriteError({
+        "index" : 0,
+        "code" : 121,
+        "errmsg" : "Document failed validation",
+        "op" : {
+                "_id" : ObjectId("626fa63eb93a4bb1dd857b18"),
+                "name" : "bike"
+        },
+        "errInfo" : {
+                "failingDocumentId" : ObjectId("626fa63eb93a4bb1dd857b18"),
+                "details" : {
+                        "operatorName" : "$jsonSchema",
+                        "schemaRulesNotSatisfied" : [
+                                {
+                                        "operatorName" : "required",
+                                        "specifiedAs" : {
+                                                "required" : [
+                                                        "name",
+                                                        "price"
+                                                ]
+                                        },
+                                        "missingProperties" : [
+                                                "price"
+                                        ]
+                                }
+                        ]
+                }
+        }
+})
+WriteError@src/mongo/shell/bulk_api.js:465:48
+mergeBatchResults@src/mongo/shell/bulk_api.js:871:49
+executeBatch@src/mongo/shell/bulk_api.js:940:13
+Bulk/this.execute@src/mongo/shell/bulk_api.js:1182:21
+DBCollection.prototype.insertOne@src/mongo/shell/crud_api.js:264:9
+@(shell):1:1
+
+
+> db.products.find()
+{ "_id" : ObjectId("626fa60cb93a4bb1dd857b17"), "name" : "car", "price" : 250000 }
+
+
+> db.products.drop()
+true
+
+> db.createCollection("products", {
+... validator: {
+...   $jsonSchema: {
+...     properties: {
+...       name: {bsonType: "string", pattern: "[A-Z].*",
+...       price: {bsonType: "int", minimum: 1000, maximum: 300000}
+...     }
+...   }
+... }
+... })
+...
+...
+
+> db.products.insert({name: "bob"})
+WriteResult({ "nInserted" : 1 })
+
+> db.products.drop()
+true
+
+> db.createCollection("products", {
+... validator: {
+...   $jsonSchema: {
+...     properties: {
+...       name: {bsonType: "string", pattern: "[A-Z].*"},
+...       price: {bsonType: "int", minimum: 1000, maximum: 300000}
+...     }
+...   }
+... }
+... })
+{ "ok" : 1 }
+
+> db.products.insert({name: "bob"})
+WriteResult({
+        "nInserted" : 0,
+        "writeError" : {
+                "code" : 121,
+                "errmsg" : "Document failed validation",
+                "errInfo" : {
+                        "failingDocumentId" : ObjectId("626fa988b93a4bb1dd857b1a"),
+                        "details" : {
+                                "operatorName" : "$jsonSchema",
+                                "schemaRulesNotSatisfied" : [
+                                        {
+                                                "operatorName" : "properties",
+                                                "propertiesNotSatisfied" : [
+                                                        {
+                                                                "propertyName" : "name",
+                                                                "details" : [
+                                                                        {
+                                                                                "operatorName" : "pattern",
+                                                                                "specifiedAs" : {
+                                                                                        "pattern" : "[A-Z].*"
+                                                                                },
+                                                                                "reason" : "regular expression did not match",
+                                                                                "consideredValue" : "bob"
+                                                                        }
+                                                                ]
+                                                        }
+                                                ]
+                                        }
+                                ]
+                        }
+                }
+        }
+})
+
+> db.products.insert({name: "Bob"})
+WriteResult({ "nInserted" : 1 })
+
+
+> db.products.insert({name: "Bob", price: 2000})
+WriteResult({
+        "nInserted" : 0,
+        "writeError" : {
+                "code" : 121,
+                "errmsg" : "Document failed validation",
+                "errInfo" : {
+                        "failingDocumentId" : ObjectId("626faa00b93a4bb1dd857b1c"),
+                        "details" : {
+                                "operatorName" : "$jsonSchema",
+                                "schemaRulesNotSatisfied" : [
+                                        {
+                                                "operatorName" : "properties",
+                                                "propertiesNotSatisfied" : [
+                                                        {
+                                                                "propertyName" : "price",
+                                                                "details" : [
+                                                                        {
+                                                                                "operatorName" : "bsonType",
+                                                                                "specifiedAs" : {
+                                                                                        "bsonType" : "int"
+                                                                                },
+                                                                                "reason" : "type did not match",
+                                                                                "consideredValue" : 2000,
+                                                                                "consideredType" : "double"
+                                                                        }
+                                                                ]
+                                                        }
+                                                ]
+                                        }
+                                ]
+                        }
+                }
+        }
+})
+
+> db.products.insert({name: "Bob", price: NumberInt(150000)})
+WriteResult({ "nInserted" : 1 })
+
+> db.products.find()
+{ "_id" : ObjectId("626fa9a8b93a4bb1dd857b1b"), "name" : "Bob" }
+{ "_id" : ObjectId("626faa1bb93a4bb1dd857b1d"), "name" : "Bob", "price" : 150000 }

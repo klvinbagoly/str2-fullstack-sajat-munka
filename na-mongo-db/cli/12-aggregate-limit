@@ -1,0 +1,18 @@
+> db.users.aggregate([ {$match: {}}, {$limit: 2} ])
+{ "_id" : ObjectId("626efea3b93a4bb1dd857b0e"), "name" : "Joe", "age" : 32 }
+{ "_id" : ObjectId("626f95acb93a4bb1dd857b0f"), "name" : "Mary", "age" : 33, "email" : "mary@poppins.hu", "skills" : [ "php", "mysql", "mongoDB" ] }
+
+> db.users.find({age: {$gt: 29}}).limit(2)
+{ "_id" : ObjectId("626efea3b93a4bb1dd857b0e"), "name" : "Joe", "age" : 32 }
+{ "_id" : ObjectId("626f95acb93a4bb1dd857b0f"), "name" : "Mary", "age" : 33, "email" : "mary@poppins.hu", "skills" : [ "php", "mysql", "mongoDB" ] }
+
+
+> db.users.find({age: {$gt: 29}}).limit(3)
+{ "_id" : ObjectId("626efea3b93a4bb1dd857b0e"), "name" : "Joe", "age" : 32 }
+{ "_id" : ObjectId("626f95acb93a4bb1dd857b0f"), "name" : "Mary", "age" : 33, "email" : "mary@poppins.hu", "skills" : [ "php", "mysql", "mongoDB" ] }
+{ "_id" : ObjectId("626fa06bb93a4bb1dd857b13"), "name" : "Jill", "age" : 34 }
+
+> db.users.aggregate([ {$match: {}}, {$sort: {name: 1}}, {$limit: 2} ])
+{ "_id" : ObjectId("626f9d60096b6507fdaa4e9e"), "name" : "Bob", "age" : 22, "email" : "bob@gmail.com", "skills" : [ "php", "js", "sql", "html" ] }
+{ "_id" : ObjectId("626fa06bb93a4bb1dd857b13"), "name" : "Jill", "age" : 34 }
+>
