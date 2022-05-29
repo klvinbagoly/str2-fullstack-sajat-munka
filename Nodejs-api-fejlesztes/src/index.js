@@ -38,7 +38,7 @@ app.use(express.static('public'))
 // Json kéréseket automatikusan átkonvertál
 app.use(bodyParser.json())
 
-app.use('/person', require('./controllers/person/routes'))
+app.use('/person', require('./controllers/person/person.routes'))
 
 // Hibakezelés
 app.use((err, req, res, next) => {
