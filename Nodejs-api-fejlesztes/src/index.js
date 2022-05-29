@@ -1,3 +1,5 @@
+require('dotenv').config()
+const config = require('config')
 const express = require('express')
 const bodyParser = require('body-parser')
 const morgan = require('morgan')
@@ -8,10 +10,15 @@ mongoose.Promise = global.Promise
 // SpJ7wsJlizYWqHD8
 
 const app = express()
-const port = 3000
+const port = process.env.PORT || 3000
 
 // Connection to MongoDB database.
-mongoose.connect('mongodb+srv://nodeUser:SpJ7wsJlizYWqHD8@cluster0.gtzh5.mongodb.net/?retryWrites=true&w=majority', {
+if (!config.has('database')) {
+  logger.error('No config database found.')
+  process.exit()
+}
+const { username, password, host } = config.get('database')
+mongoose.connect(`mongodb+srv://${username}:${password}@${host}`, {
   useNewUrlParser: true,
   useUnifiedTopology: true
 })
