@@ -43,7 +43,7 @@ describe('person controller', () => {
     response = mockResponse()
   })
 
-  test('find one with valid id', () => {
+  test('find one with valid id', (done) => {
     const PERSON_ID = 1
     const request = mockRequest({
       params: {
@@ -51,12 +51,13 @@ describe('person controller', () => {
       }
     })
 
-    return personController.findOne(request, response, nextFunction)
+    personController.findOne(request, response, nextFunction)
       .then(() => {
         expect(personService.findOne).toBeCalledWith(PERSON_ID)
         expect(response.json).toBeCalledWith(
           mockData.find(person => person.id === PERSON_ID)
         )
+        done()
       })
   })
 })
