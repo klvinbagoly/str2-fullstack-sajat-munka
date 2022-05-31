@@ -3,7 +3,6 @@ const mongoose = require('mongoose')
 const supertest = require('supertest')
 const config = require('config')
 const Person = require('./models/person.model')
-const { Test } = require('supertest')
 const logger = require('../config/logger')
 
 
@@ -23,23 +22,26 @@ describe('REST API integration tests', () => {
 
   beforeEach(done => {
     const { username, password, host } = config.get('database')
-    mongoose.connect(`mongodb+srv://${username}:${password}@${host}`, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
+    mongoose.connect(`mongodb+srv://${host}`, {
+      user: username,
+      pass: password,
+      // useNewUrlParser: true,
+      // useUnifiedTopology: true,
       // dbName: 'jest'
     })
       // .then(() => logger.info('MongoDB connection has been established successfully.'))
       .then(done)
       .catch(err => {
-        // logger.error(err)
+        logger.error(err)
         process.exit()
       })
   })
 
   afterEach(done => {
-    mongoose.connection.db.dropDatabase(() => {
-      mongoose.connection.close(done)
-    })
+    // mongoose.connection.db.dropDatabase(() => {
+    mongoose.connection.db.dropCollection('people', () => { mongoose.connection.close(done) })
+
+    // })
   })
 
   test('GET /person', () => {
@@ -54,6 +56,21 @@ describe('REST API integration tests', () => {
           expect(person.lastName).toBe(insertData[index].lastName)
           expect(person.email).toBe(insertData[index].email)
         })
+      })
+  })
+
+  test('GET /person/:id', () => {
+    let firstPostId
+    return Person.insertMany(insertData)
+      .then(people => {
+        firstPostId = people[0]._id
+        return supertest(app).get(`/person/${firstPostId}`).expect(200)
+      })
+      .then(response => {
+        const person = response.body
+        expect(person.firstName).toBe(insertData[0].firstName)
+        expect(person.lastName).toBe(insertData[0].lastName)
+        expect(person.email).toBe(insertData[0].email)
       })
   })
 })

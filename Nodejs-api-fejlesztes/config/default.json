@@ -1,7 +1,7 @@
 {
-  "database":{
+  "database": {
     "username": "nodeUser",
     "password": "SpJ7wsJlizYWqHD8",
-    "host": "cluster0.gtzh5.mongodb.net/?retryWrites=true&w=majority"
+    "host": "cluster0.gtzh5.mongodb.net/test?retryWrites=true&w=majority"
   }
 }
