@@ -5,10 +5,15 @@ const logger = require('./config/logger')
 
 const bodyParser = require('body-parser')
 const morgan = require('morgan')
+const swaggerUi = require('swagger-ui-express')
+const YAML = require('yamljs')
+
 const mongoose = require('mongoose')
 mongoose.Promise = global.Promise
 
 const app = express()
+
+const swaggerDocument = YAML.load('./docs/swagger.yaml')
 
 // Connection to MongoDB database.
 if (!config.has('database')) {
@@ -40,6 +45,8 @@ app.use(express.static('public'))
 app.use(bodyParser.json())
 
 app.use('/person', require('./controllers/person/person.routes'))
+app.use('/post', require('./controllers/post/post.routes'))
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 
 // Hibakezelés
 app.use((err, req, res, next) => {

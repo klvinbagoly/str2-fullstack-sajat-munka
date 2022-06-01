@@ -5,9 +5,9 @@ exports.create = personData => {
   return person.save()
 }
 
-exports.findAll = () => Person.find()
+exports.findAll = () => Person.find().populate('posts')
 
-exports.findOne = id => Person.findById(id)
+exports.findOne = id => Person.findById(id).populate('posts')
 
 exports.update = (id, update) => Person.findByIdAndUpdate(id, update, { new: true })
 
