@@ -3,7 +3,7 @@ const mongoose = require('mongoose')
 const supertest = require('supertest')
 const config = require('config')
 const Person = require('./models/person.model')
-const logger = require('../config/logger')
+const logger = require('./config/logger')
 
 
 describe('REST API integration tests', () => {
@@ -22,15 +22,15 @@ describe('REST API integration tests', () => {
 
   beforeEach(done => {
     const { username, password, host } = config.get('database')
-    mongoose.connect(`mongodb+srv://${host}`, {
-      user: username,
-      pass: password,
-      // useNewUrlParser: true,
-      // useUnifiedTopology: true,
-      // dbName: 'jest'
+    console.log(username, password, host);
+    mongoose.connect(`mongodb+srv://${username}:${password}@${host}`, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      dbName: 'tester'
     })
       // .then(() => logger.info('MongoDB connection has been established successfully.'))
-      .then(done)
+      // .then(() => mongoose.connection.collection('testusers'))
+      .then(() => done())
       .catch(err => {
         logger.error(err)
         process.exit()
@@ -38,10 +38,12 @@ describe('REST API integration tests', () => {
   })
 
   afterEach(done => {
-    // mongoose.connection.db.dropDatabase(() => {
-    mongoose.connection.db.dropCollection('people', () => { mongoose.connection.close(done) })
+    mongoose.connection.db.dropDatabase(() => {
+      // mongoose.connection.db.dropCollection('people', () => {
+      mongoose.connection.close(() => done())
 
-    // })
+      // })
+    })
   })
 
   test('GET /person', () => {

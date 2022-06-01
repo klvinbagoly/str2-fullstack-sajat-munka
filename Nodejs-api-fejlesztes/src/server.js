@@ -1,6 +1,6 @@
 const express = require('express')
 const config = require('config')
-const logger = require('../config/logger')
+const logger = require('./config/logger')
 
 
 const bodyParser = require('body-parser')
@@ -17,11 +17,9 @@ if (!config.has('database')) {
 }
 
 const { username, password, host } = config.get('database')
-mongoose.connect(`mongodb+srv://${host}`, {
-  user: username,
-  pass: password,
-  // useNewUrlParser: true,
-  // useUnifiedTopology: true,
+mongoose.connect(`mongodb+srv://${username}:${password}@${host}`, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
   // dbName: 'test'
 })
   .then(() => logger.info('MongoDB connection has been established successfully.'))
