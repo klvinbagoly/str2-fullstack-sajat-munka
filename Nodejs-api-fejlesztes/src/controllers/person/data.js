@@ -1,26 +1,26 @@
 module.exports = [{
   "id": 1,
-  "first_name": "Fiorenze",
-  "last_name": "Dyneley",
+  "firstName": "Fiorenze",
+  "lastName": "Dyneley",
   "email": "fdyneley0@narod.ru"
 }, {
   "id": 2,
-  "first_name": "Owen",
-  "last_name": "Jirka",
+  "firstName": "Owen",
+  "lastName": "Jirka",
   "email": "ojirka1@squidoo.com"
 }, {
   "id": 3,
-  "first_name": "Terra",
-  "last_name": "Hurdman",
+  "firstName": "Terra",
+  "lastName": "Hurdman",
   "email": "thurdman2@reverbnation.com"
 }, {
   "id": 4,
-  "first_name": "Thomasin",
-  "last_name": "de Keep",
+  "firstName": "Thomasin",
+  "lastName": "de Keep",
   "email": "tdekeep3@fc2.com"
 }, {
   "id": 5,
-  "first_name": "Lawrence",
-  "last_name": "Tearle",
+  "firstName": "Lawrence",
+  "lastName": "Tearle",
   "email": "ltearle4@infoseek.co.jp"
 }];

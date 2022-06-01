@@ -23,6 +23,7 @@ mongoose.connect(`mongodb+srv://${username}:${password}@${host}`, {
   // dbName: 'test'
 })
   .then(() => logger.info('MongoDB connection has been established successfully.'))
+  // .then(() => require('./seeder'))
   .catch(err => {
     logger.error(err)
     process.exit()
