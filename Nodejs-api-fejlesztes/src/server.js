@@ -11,6 +11,10 @@ const YAML = require('yamljs')
 const mongoose = require('mongoose')
 mongoose.Promise = global.Promise
 
+// Authentication.
+const authenticateJwt = require('./auth/authenticate')
+const adminOnly = require('./auth/adminOnly')
+
 const app = express()
 
 const swaggerDocument = YAML.load('./docs/swagger.yaml')
@@ -44,8 +48,15 @@ app.use(express.static('public'))
 // Json kéréseket automatikusan átkonvertál
 app.use(bodyParser.json())
 
-app.use('/person', require('./controllers/person/person.routes'))
-app.use('/post', require('./controllers/post/post.routes'))
+
+// Router - bejelentkezés
+app.post('/login', require('./auth/login'))
+
+// Csak bejelentkezés után tekinthető meg
+app.use('/person', authenticateJwt, require('./controllers/person/person.routes'))
+
+// Csak bejelentkezés és admin jogosultság esetén engedi tovább
+app.use('/post', authenticateJwt, adminOnly, require('./controllers/post/post.routes'))
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 
 // Hibakezelés
