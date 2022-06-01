@@ -14,6 +14,7 @@ mongoose.Promise = global.Promise
 // Authentication.
 const authenticateJwt = require('./auth/authenticate')
 const adminOnly = require('./auth/adminOnly')
+const authHandler = require('./auth/authHandler')
 
 const app = express()
 
@@ -26,7 +27,7 @@ if (!config.has('database')) {
 }
 
 const { username, password, host } = config.get('database')
-mongoose.connect(`mongodb+srv://${username}:${password}@${host}`, {
+mongoose.connect(`mongodb://${host}`, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   // dbName: 'test'
@@ -50,7 +51,9 @@ app.use(bodyParser.json())
 
 
 // Router - bejelentkezés
-app.post('/login', require('./auth/login'))
+app.post('/login', authHandler.login)
+app.post('/refresh', authHandler.refresh)
+app.post('/logout', authHandler.logout)
 
 // Csak bejelentkezés után tekinthető meg
 app.use('/person', authenticateJwt, require('./controllers/person/person.routes'))

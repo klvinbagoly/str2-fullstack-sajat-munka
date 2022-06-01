@@ -2,6 +2,6 @@
   "database": {
     "username": "nodeUser",
     "password": "SpJ7wsJlizYWqHD8",
-    "host": "cluster0.gtzh5.mongodb.net/?retryWrites=true&w=majority"
+    "host": "mongo:27017/test?retryWrites=true&w=majority"
   }
 }
