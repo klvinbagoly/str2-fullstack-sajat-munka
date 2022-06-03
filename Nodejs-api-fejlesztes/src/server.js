@@ -27,7 +27,7 @@ if (!config.has('database')) {
 }
 
 const { username, password, host } = config.get('database')
-mongoose.connect(`mongodb://${host}`, {
+mongoose.connect(`mongodb+srv://${username}:${password}@${host}`, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   // dbName: 'test'

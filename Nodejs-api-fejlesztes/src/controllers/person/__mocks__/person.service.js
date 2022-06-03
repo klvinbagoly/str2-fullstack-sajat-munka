@@ -1,4 +1,4 @@
-const personService = jest.mock('./person.service')
+const personService = jest.createMockFromModule('../person.service')
 
 let mockData
 
