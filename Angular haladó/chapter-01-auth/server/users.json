@@ -5,7 +5,7 @@
       "first_name": "Charlie",
       "last_name": "Firpo",
       "email": "seyden0@merriam-webster.com",
-      "password": "$2a$10$KKzAQMXlYJSq7VMlCKcJb.cIVpW4J22j482HLbglgpvTarJZUQc1C",
+      "password": "$2a$10$NyVxw02gde4dRM2fLhTIiO9hWO1.zP1l9VGV/CXBPe7eDG4RCNGYm",
       "role": "2"
     },
     {
@@ -13,7 +13,7 @@
       "first_name": "Finn",
       "last_name": "Upjohn",
       "email": "fupjohn1@paypal.com",
-      "password": "$2a$10$xW1vJhe3xczrnTQOZYlaY.DV/UbYal1.lc2d9ip6tw3.6cWv8XoQ.",
+      "password": "$2a$10$qoIwVz9EeOqHa8/UfVSVFuL/3FGZ9vQbKiaaQnHaWIUsR8Mh4zO2a",
       "role": "1"
     },
     {
@@ -21,7 +21,7 @@
       "first_name": "Nickey",
       "last_name": "Tyt",
       "email": "ntyt2@psu.edu",
-      "password": "$2a$10$eZMp/S6cJtgOTy94BKQaAun/m.f3eIu8smIpIi2tvQUgGAiwxfDsy",
+      "password": "$2a$10$EXqLUyvlG5N3LGnSxbCwqe1r7tKPiGPi78wT64IeSVH2Z0crmYKPu",
       "role": 3
     },
     {
@@ -29,7 +29,7 @@
       "first_name": "Goldia",
       "last_name": "Bloodworthe",
       "email": "gbloodworthe3@mail.ru",
-      "password": "$2a$10$XCaD5qH6cy8b2Zs6.X21dON.WZXC.4uYI6UuGhyqSWzMSyGJ9fQQ6",
+      "password": "$2a$10$itbpufTcRab1eUJ9pAHaO.OPxfipmO7g/6P08K8QmSCAryf.pNIhq",
       "role": 1
     },
     {

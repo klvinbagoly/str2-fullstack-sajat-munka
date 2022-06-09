@@ -14,7 +14,7 @@ export class AuthService {
   loginUrl = `${this.config.apiUrl}login`
   logoutUrl = `${this.config.apiUrl}logout`
   storageName = 'currentUser'
-  currentUserSubject: BehaviorSubject<User | null> = new BehaviorSubject<User | null>(null)
+  currentUserSubject: BehaviorSubject<any> = new BehaviorSubject<any>(null)
   lastToken: string = ''
 
   constructor(
@@ -24,7 +24,7 @@ export class AuthService {
     private userService: UserService
   ) { }
 
-  get currentUserValue(): User | null {
+  get currentUserValue(): User {
     return this.currentUserSubject.value
   }
 
