@@ -1,3 +1,4 @@
+import { updateItem } from './../../store/user/UserActions';
 import { Store, select } from '@ngrx/store';
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
@@ -52,6 +53,10 @@ export class UserEditComponent implements OnInit {
     //       }, 3000)
     //     }
     //   )
+
+    const user: User = ({ ...ngForm.value, id: this.userID })
+    this.store.dispatch(updateItem({ item: user }))
+    history.back()
   }
 
 }
