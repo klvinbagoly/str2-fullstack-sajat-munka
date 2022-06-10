@@ -17,8 +17,11 @@
     <tr *ngFor="let investor of list | simpleFilter:filterPhrase">
       <td *ngFor="let col of cols"> {{ investor[col.key] }} </td>
       <td>
-        <span class="badge bg-primary">
+        <span *ngIf="type === 'fibonacci'" class="badge bg-primary">
           ${{ calculate(investor) }}
+        </span>
+        <span *ngIf="type === 'grow'" class="badge bg-primary">
+          ${{ { base: 1000, interest: 0.06, years: investor.role * 10 } | grow }}
         </span>
       </td>
     </tr>

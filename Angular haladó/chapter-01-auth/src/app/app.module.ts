@@ -21,6 +21,7 @@ import { UserEffect } from './store/user/UserEffects';
 import { FibListComponent } from './common/fib-list/fib-list.component';
 import { InvestorsComponent } from './page/investors/investors.component';
 import { SimpleFilterPipe } from './pipe/simple-filter.pipe';
+import { GrowPipe } from './pipe/grow.pipe';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import { SimpleFilterPipe } from './pipe/simple-filter.pipe';
     ForbiddenComponent,
     FibListComponent,
     InvestorsComponent,
-    SimpleFilterPipe
+    SimpleFilterPipe,
+    GrowPipe
   ],
   imports: [
     BrowserModule,
