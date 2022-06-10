@@ -1,15 +1,16 @@
-import { loadItems, errorItem } from './UserActions';
+import { loadItems, errorItem, loadSelectedItem } from './UserActions';
 import { User } from "src/app/model/user";
 import { createReducer, on } from '@ngrx/store';
 import { tap } from 'rxjs';
 
 
 export interface State {
-  users: { items: User[], error: string }
+  [x: string]: any,
+  users: { items: User[], selected?: User | null, error: string }
 }
 
 export const initialState: State = {
-  users: { items: [], error: '' }
+  users: { items: [], selected: null, error: '' }
 }
 
 // ActionReducer: Az eseményekből eltárolja az adatokat a Store-ban.
@@ -21,6 +22,14 @@ export const UserReducer = createReducer(
     return {
       ...state,
       items: action.items
+    }
+  }),
+  // Egy user lekérése.
+  on(loadSelectedItem, (state, action) => {
+    console.log(state)
+    return {
+      ...state,
+      selected: action.selected
     }
   }),
   on(errorItem, (state, action) => ({
@@ -36,3 +45,7 @@ export const selectItems = (state: State) => {
   console.log(state)
   return state.users.items
 }
+
+// A Store-ban tárolt adatok nem módosíthatóak (immutable), ezért le kell másolni
+// az Object.assign() metódussal, hogy az űrlapon szerkeszthető legyen.
+export const selectOneItem = (state: State) => Object.assign({}, state.users.selected)

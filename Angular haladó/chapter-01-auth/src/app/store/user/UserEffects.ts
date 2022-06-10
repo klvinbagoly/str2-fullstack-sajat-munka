@@ -1,5 +1,5 @@
 import { catchError, Observable, of, switchMap, tap } from 'rxjs';
-import { loadItems, getItems } from './UserActions';
+import { loadItems, getItems, getOneItem, LOAD_ITEMS, ERROR_ITEMS, LOAD_SELECTED_ITEM } from './UserActions';
 import { Injectable } from '@angular/core';
 import { Actions, ofType, createEffect } from '@ngrx/effects'
 import { UserService } from 'src/app/service/user.service';
@@ -18,9 +18,20 @@ export class UserEffect {
       // lekérjük a usereket.
       switchMap(() => this.userService.get()),
       // Kiváltja a loadItems eseményt, átadjuk a paramétert.
-      switchMap(users => of({ type: '[User] load items', items: users })),
+      switchMap(users => of({ type: LOAD_ITEMS, items: users })),
       // Hiba esetén kiváltja az errorItem eseményt
-      catchError(error => of({ type: '[User] error item', message: error }))
+      catchError(error => of({ type: ERROR_ITEMS, message: error }))
+    )
+  })
+
+  getOneItem$ = createEffect((): Observable<Action> => {
+    return this.actions$.pipe(
+      tap(action => console.log(action)),
+      ofType(getOneItem),
+      // megkapja az eseményt (Action).
+      switchMap(action => this.userService.get(action.id)),
+      switchMap(user => of({ type: LOAD_SELECTED_ITEM, selected: user })),
+      catchError(error => of({ type: ERROR_ITEMS, message: error }))
     )
   })
 
