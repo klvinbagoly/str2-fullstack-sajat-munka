@@ -1,9 +1,10 @@
-import { catchError, Observable, of, switchMap, tap } from 'rxjs';
+import { catchError, Observable, of, switchMap, tap, withLatestFrom } from 'rxjs';
 import { loadItems, getItems, getOneItem, LOAD_ITEMS, ERROR_ITEMS, LOAD_SELECTED_ITEM } from './UserActions';
 import { Injectable } from '@angular/core';
 import { Actions, ofType, createEffect } from '@ngrx/effects'
 import { UserService } from 'src/app/service/user.service';
-import { Action } from '@ngrx/store';
+import { Action, Store } from '@ngrx/store';
+import { User } from 'src/app/model/user';
 
 
 @Injectable()
@@ -28,8 +29,14 @@ export class UserEffect {
     return this.actions$.pipe(
       tap(action => console.log(action)),
       ofType(getOneItem),
-      // megkapja az eseményt (Action).
-      switchMap(action => this.userService.get(action.id)),
+      // Az utolsó adathoz hozzátesz egy újat
+      withLatestFrom(this.store$),
+      // megkapja az eseményt (Action) + a Store-t
+      switchMap(([action, store]) => {
+        // megvizsgáljuk, hogy a store-ban benne van-e már az adat
+        const cache = store.users?.items?.find((item: User) => item.id === action.id)
+        return cache ? of(cache) : this.userService.get(action.id)
+      }),
       switchMap(user => of({ type: LOAD_SELECTED_ITEM, selected: user })),
       catchError(error => of({ type: ERROR_ITEMS, message: error }))
     )
@@ -37,7 +44,8 @@ export class UserEffect {
 
   constructor(
     private actions$: Actions,
-    private userService: UserService
+    private userService: UserService,
+    private store$: Store<any>
   ) {
 
   }
