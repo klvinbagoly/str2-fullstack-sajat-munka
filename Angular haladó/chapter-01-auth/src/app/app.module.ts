@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
@@ -18,6 +18,9 @@ import { JwtInterceptorService } from './service/jwt-interceptor.service';
 
 import { UserReducer } from './store/user/UserReducersAlternativeVersion';
 import { UserEffect } from './store/user/UserEffects';
+import { FibListComponent } from './common/fib-list/fib-list.component';
+import { InvestorsComponent } from './page/investors/investors.component';
+import { SimpleFilterPipe } from './pipe/simple-filter.pipe';
 
 @NgModule({
   declarations: [
@@ -27,13 +30,17 @@ import { UserEffect } from './store/user/UserEffects';
     LoginComponent,
     UsersComponent,
     UserEditComponent,
-    ForbiddenComponent
+    ForbiddenComponent,
+    FibListComponent,
+    InvestorsComponent,
+    SimpleFilterPipe
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
+    ReactiveFormsModule,
     StoreModule.forRoot({ users: UserReducer }),
     EffectsModule.forRoot([UserEffect])
   ],

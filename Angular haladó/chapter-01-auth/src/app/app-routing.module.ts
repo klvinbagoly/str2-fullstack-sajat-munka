@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { ForbiddenComponent } from './page/forbidden/forbidden.component';
 import { HomeComponent } from './page/home/home.component';
+import { InvestorsComponent } from './page/investors/investors.component';
 import { LoginComponent } from './page/login/login.component';
 import { UserEditComponent } from './page/user-edit/user-edit.component';
 import { UsersComponent } from './page/users/users.component';
@@ -32,6 +33,14 @@ const routes: Routes = [
     canActivate: [AuthGuardService, RoleGuardService],
     data: {
       expectedRole: 3
+    }
+  },
+  {
+    path: 'investors',
+    component: InvestorsComponent,
+    canActivate: [AuthGuardService, RoleGuardService],
+    data: {
+      expectedRole: 2
     }
   },
   {
