@@ -1,11 +1,12 @@
+import { flushError } from './../../store/user/UserActions';
 import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 import { User } from 'src/app/model/user';
 import { ConfigService } from 'src/app/service/config.service';
 import { UserService } from 'src/app/service/user.service';
 import { Store, select } from '@ngrx/store';
 import { addItem, deleteItem, getItems } from 'src/app/store/user/UserActions';
-import { selectItems } from 'src/app/store/user/UserReducers';
+import { selectError, selectItems } from 'src/app/store/user/UserReducers';
 
 @Component({
   selector: 'app-users',
@@ -18,6 +19,15 @@ export class UsersComponent implements OnInit {
   users$!: Observable<User[]>
 
   cols: { key: string, label: string }[] = this.config.userColumns
+
+  error$ = this.store.pipe(select(selectError)).pipe(
+    tap(error => {
+      const to = setTimeout(() => {
+        clearTimeout(to)
+        this.store.dispatch(flushError())
+      }, 3000)
+    })
+  )
 
   constructor(
     private userService: UserService,

@@ -1,4 +1,4 @@
-import { catchError, Observable, of, switchMap, tap, withLatestFrom } from 'rxjs';
+import { catchError, mergeMap, Observable, of, switchMap, tap, withLatestFrom } from 'rxjs';
 import { loadItems, getItems, getOneItem, LOAD_ITEMS, ERROR_ITEMS, LOAD_SELECTED_ITEM, updateItem, LOAD_UPDATED_ITEM, addItem, LOAD_ADDED_ITEM, deleteItem, REMOVE_ITEM } from './UserActions';
 import { Injectable } from '@angular/core';
 import { Actions, ofType, createEffect } from '@ngrx/effects'
@@ -21,7 +21,7 @@ export class UserEffect {
       // Kiváltja a loadItems eseményt, átadjuk a paramétert.
       switchMap(users => of({ type: LOAD_ITEMS, items: users })),
       // Hiba esetén kiváltja az errorItem eseményt
-      catchError(error => of({ type: ERROR_ITEMS, message: error }))
+      catchError(error => of({ type: ERROR_ITEMS, error }))
     )
   })
 
@@ -37,7 +37,7 @@ export class UserEffect {
         return cache ? of(cache) : this.userService.get(action.id)
       }),
       switchMap(user => of({ type: LOAD_SELECTED_ITEM, selected: user })),
-      catchError(error => of({ type: ERROR_ITEMS, message: error }))
+      catchError(error => of({ type: ERROR_ITEMS, error }))
     )
   })
 
@@ -46,7 +46,7 @@ export class UserEffect {
       ofType(updateItem),
       switchMap(action => this.userService.update(action.item)),
       switchMap(user => of({ type: LOAD_UPDATED_ITEM, item: user })),
-      catchError(error => of({ type: ERROR_ITEMS, message: error }))
+      catchError(error => of({ type: ERROR_ITEMS, error }))
     )
   })
 
@@ -56,11 +56,13 @@ export class UserEffect {
       ofType(addItem),
       // Elmentjük az utolsó addItem action-t 
       tap(action => lastAction = action),
-      switchMap(action => this.userService.create(action.item)),
-      // Mivel a json-server-auth nem adja vissza az új user-t, az addItem kérésből kell elmenteni
-      switchMap(action => this.userService.query(`email=${lastAction.item.email}`)),
-      switchMap(user => of({ type: LOAD_ADDED_ITEM, item: user })),
-      catchError(error => of({ type: ERROR_ITEMS, message: error }))
+      // Hogy az action ne álljon meg hiba esetén
+      mergeMap(action => this.userService.create(action.item).pipe(
+        // Mivel a json-server-auth nem adja vissza az új user-t, az addItem kérésből kell elmenteni
+        switchMap(action => this.userService.query(`email=${lastAction.item.email}`)),
+        switchMap(user => of({ type: LOAD_ADDED_ITEM, item: user })),
+        catchError(error => of({ type: ERROR_ITEMS, error }))
+      )),
     )
   })
 
@@ -71,7 +73,7 @@ export class UserEffect {
       tap(action => lastAction = action),
       switchMap(action => this.userService.delete(action.item)),
       switchMap((nothing) => of({ type: REMOVE_ITEM, item: lastAction.item })),
-      catchError(error => of({ type: ERROR_ITEMS, message: error }))
+      catchError(error => of({ type: ERROR_ITEMS, error }))
     )
   })
 

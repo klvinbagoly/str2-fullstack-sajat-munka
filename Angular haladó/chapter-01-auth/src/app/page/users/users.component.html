@@ -1,3 +1,10 @@
+<div *ngIf="error$ | async as error" class="row">
+  <div class="col-12 mt-3 mb-3">
+    <div class="alert alert-danger">
+      <strong>Error:</strong> {{ error || '' }}
+    </div>
+  </div>
+</div>
 <div class="row">
   <div class="col-12">
     <button (click)="create()" class="btn btn-lg btn-block btn-success mb-3">

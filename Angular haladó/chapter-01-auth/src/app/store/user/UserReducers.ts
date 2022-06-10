@@ -1,4 +1,4 @@
-import { loadItems, errorItem, loadSelectedItem, loadUpdatedItem, loadAddedItem, removeDeletedItem } from './UserActions';
+import { loadItems, errorItem, loadSelectedItem, loadUpdatedItem, loadAddedItem, removeDeletedItem, flushError } from './UserActions';
 import { User } from "src/app/model/user";
 import { createReducer, on } from '@ngrx/store';
 import { tap } from 'rxjs';
@@ -6,11 +6,11 @@ import { tap } from 'rxjs';
 
 export interface State {
   [x: string]: any,
-  users: { items: User[], selected?: User | null, error: string }
+  users: { items: User[], selected?: User | null, error: any }
 }
 
 export const initialState: State = {
-  users: { items: [], selected: null, error: '' }
+  users: { items: [], selected: null, error: null }
 }
 
 // ActionReducer: Az eseményekből eltárolja az adatokat a Store-ban.
@@ -55,13 +55,17 @@ export const UserReducer = createReducer(
 
   on(errorItem, (state, action) => ({
     ...state,
-    error: action.message
+    error: action.error
+  })),
+  on(flushError, (state, action) => ({
+    ...state,
+    error: null
   }))
 )
 
 // A selectorok lekérdezik az adatokat a Store-ból.
 
-export const selectError = (state: State) => state.users.error
+export const selectError = (state: State) => state.users.error?.error
 export const selectItems = (state: State) => {
   console.log(state)
   return state.users.items
