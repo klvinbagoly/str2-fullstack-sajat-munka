@@ -29,8 +29,8 @@ export const UserReducer = createReducer(
 
 // A selectorok lekérdezik az adatokat a Store-ból.
 
-export const selectError = (states: { [key: string]: State }) => states['users'].error
-export const selectItems = (states: { [key: string]: State }) => {
+export const selectError = (states: { users: State }) => states.users.error
+export const selectItems = (states: { users: State }) => {
   console.log(states)
-  return states['users'].items
+  return states.users.items
 }
