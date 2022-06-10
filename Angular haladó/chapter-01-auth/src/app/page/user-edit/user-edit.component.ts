@@ -7,7 +7,7 @@ import { Observable, switchMap, take } from 'rxjs';
 import { User } from 'src/app/model/user';
 import { UserService } from 'src/app/service/user.service';
 import { getOneItem } from 'src/app/store/user/UserActions';
-import { selectOneItem } from 'src/app/store/user/UserReducers';
+import { selectOneItem } from 'src/app/store/user/UserReducersAlternativeVersion';
 
 @Component({
   selector: 'app-user-edit',

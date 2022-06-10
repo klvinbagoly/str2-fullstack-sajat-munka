@@ -16,7 +16,7 @@ import { UserEditComponent } from './page/user-edit/user-edit.component';
 import { ForbiddenComponent } from './page/forbidden/forbidden.component';
 import { JwtInterceptorService } from './service/jwt-interceptor.service';
 
-import { UserReducer } from './store/user/UserReducers';
+import { UserReducer } from './store/user/UserReducersAlternativeVersion';
 import { UserEffect } from './store/user/UserEffects';
 
 @NgModule({

@@ -6,7 +6,7 @@ import { ConfigService } from 'src/app/service/config.service';
 import { UserService } from 'src/app/service/user.service';
 import { Store, select } from '@ngrx/store';
 import { addItem, deleteItem, getItems } from 'src/app/store/user/UserActions';
-import { selectError, selectItems } from 'src/app/store/user/UserReducers';
+import { selectError, selectItems } from 'src/app/store/user/UserReducersAlternativeVersion';
 
 @Component({
   selector: 'app-users',
