@@ -4,7 +4,7 @@ import { User } from 'src/app/model/user';
 import { ConfigService } from 'src/app/service/config.service';
 import { UserService } from 'src/app/service/user.service';
 import { Store, select } from '@ngrx/store';
-import { getItems } from 'src/app/store/user/UserActions';
+import { addItem, getItems } from 'src/app/store/user/UserActions';
 import { selectItems } from 'src/app/store/user/UserReducers';
 
 @Component({
@@ -39,6 +39,19 @@ export class UsersComponent implements OnInit {
       userResponse => console.log(userResponse),
       err => console.error(err)
     )
+  }
+
+  // Csak szemléltetésnek
+  create(): void {
+    const user: User = new User()
+    user.first_name = 'New'
+    user.last_name = 'User'
+    user.email = 'test@test.org'
+    user.password = 'test'
+    // [user.first_name, user.last_name, user.email, user.password ] = [
+    //   'New', 'User', 'test@test.org', 'test'
+    // ]
+    this.store.dispatch(addItem({ item: user }))
   }
 
 }
