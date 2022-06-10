@@ -3,6 +3,9 @@ import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
+
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NavComponent } from './page/nav/nav.component';
@@ -12,6 +15,9 @@ import { UsersComponent } from './page/users/users.component';
 import { UserEditComponent } from './page/user-edit/user-edit.component';
 import { ForbiddenComponent } from './page/forbidden/forbidden.component';
 import { JwtInterceptorService } from './service/jwt-interceptor.service';
+
+import { UserReducer } from './store/user/UserReducers';
+import { UserEffect } from './store/user/UserEffects';
 
 @NgModule({
   declarations: [
@@ -27,7 +33,9 @@ import { JwtInterceptorService } from './service/jwt-interceptor.service';
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    FormsModule
+    FormsModule,
+    StoreModule.forRoot({ users: UserReducer }),
+    EffectsModule.forRoot([UserEffect])
   ],
   providers: [
     {
